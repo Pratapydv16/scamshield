@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: scamshield-ai-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: DATABASE_URL
+        value: sqlite:///./scamshield.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: GOOGLE_WEB_RISK_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: RATE_LIMIT
+        value: 10/minute
